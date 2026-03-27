@@ -39,10 +39,8 @@ const enToDa: Record<string, string> = Object.fromEntries(
 function altLangUrl(path: string): string {
   const clean = path.replace(/\/$/, '') || '/';
   if (isDa) {
-    // Exact match (static pages)
     if (daToEn[path]) return daToEn[path];
     if (daToEn[clean]) return daToEn[clean];
-    // Dynamic routes: /da/portfolio/slug → /en/portfolio/slug
     return path.replace(/^\/da\//, '/en/');
   } else {
     if (enToDa[path]) return enToDa[path];
@@ -86,8 +84,44 @@ const altLang = isDa
       <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
         {isDa ? 'Book møde' : 'Book a call'}
       </a>
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        aria-label={isDa ? 'Åbn menu' : 'Open menu'}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        type="button"
+      >
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
     </div>
   </nav>
+
+  <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+    <ul role="list">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class:list={['mobile-link', { 'is-active': currentPath === href }]}
+            aria-current={currentPath === href ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="mobile-footer">
+      <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
+        {altLang.label}
+      </a>
+      <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
+        {isDa ? 'Book møde' : 'Book a call'}
+      </a>
+    </div>
+  </div>
 </header>
 
 <style>
@@ -188,12 +222,24 @@ const altLang = isDa
     border-color: var(--color-text);
   }
 
+  /* Hide desktop CTA on mobile — it's in the mobile menu */
+  .nav-actions .nav-cta {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .nav-actions .nav-cta {
+      display: inline-block;
+    }
+  }
+
+  /* Theme toggle */
   .theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem;
+    height: 2.75rem;
     background: none;
     border: none;
     cursor: pointer;
@@ -217,7 +263,6 @@ const altLang = isDa
     transition: box-shadow var(--transition-fast);
   }
 
-  /* Light mode: sun */
   .theme-toggle-icon::before {
     content: '';
     position: absolute;
@@ -227,19 +272,169 @@ const altLang = isDa
     transition: transform var(--transition-base);
   }
 
-  /* Dark mode: crescent */
   [data-theme="dark"] .theme-toggle-icon::before {
     transform: translateX(35%) scale(0.85);
+  }
+
+  /* Hamburger */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-2);
+    flex-shrink: 0;
+    color: var(--color-text);
+  }
+
+  @media (min-width: 1024px) {
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  .menu-bar {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transform-origin: center;
+    transition:
+      transform var(--transition-base),
+      opacity var(--transition-fast);
+  }
+
+  /* Open state — X */
+  .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Mobile menu panel */
+  .mobile-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--transition-base);
+    overflow: hidden;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-menu[aria-hidden="false"] {
+    grid-template-rows: 1fr;
+  }
+
+  /* Wrap both children so grid-template-rows collapse works */
+  .mobile-menu > ul,
+  .mobile-menu > .mobile-footer {
+    min-height: 0;
+  }
+
+  .mobile-menu > ul {
+    padding: var(--space-6) var(--gutter) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .mobile-link {
+    display: block;
+    padding-block: var(--space-4);
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 300;
+    text-decoration: none;
+    color: var(--color-muted);
+    border-bottom: 1px solid var(--color-border);
+    transition: color var(--transition-fast);
+    letter-spacing: -0.02em;
+  }
+
+  .mobile-link:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-link:hover,
+  .mobile-link.is-active {
+    color: var(--color-text);
+  }
+
+  .mobile-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--gutter) var(--space-6);
+  }
+
+  .mobile-footer .lang-switch {
+    font-size: 0.8125rem;
+  }
+
+  .mobile-footer .nav-cta {
+    display: inline-block;
+  }
+
+  @media (min-width: 1024px) {
+    .mobile-menu {
+      display: none;
+    }
   }
 </style>
 
 <script>
-  const btn = document.getElementById('theme-toggle');
+  // Theme toggle
+  const themeBtn = document.getElementById('theme-toggle');
   const html = document.documentElement;
 
-  btn?.addEventListener('click', () => {
+  themeBtn?.addEventListener('click', () => {
     const isDark = html.getAttribute('data-theme') === 'dark';
     html.setAttribute('data-theme', isDark ? 'light' : 'dark');
     localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  });
+
+  // Mobile menu
+  const menuToggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  function openMenu() {
+    menuToggle?.setAttribute('aria-expanded', 'true');
+    menuToggle?.setAttribute('aria-label', menuToggle.closest('[lang]')?.getAttribute('lang') === 'da' ? 'Luk menu' : 'Close menu');
+    mobileMenu?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menuToggle?.setAttribute('aria-expanded', 'false');
+    menuToggle?.setAttribute('aria-label', menuToggle.closest('[lang]')?.getAttribute('lang') === 'da' ? 'Åbn menu' : 'Open menu');
+    mobileMenu?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuToggle?.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+      menuToggle.focus();
+    }
+  });
+
+  // Close when a link is clicked
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
   });
 </script>
