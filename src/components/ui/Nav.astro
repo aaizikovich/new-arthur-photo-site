@@ -10,11 +10,11 @@ const currentPath = Astro.url.pathname;
 
 const navLinks = isDa
   ? [
-      { href: '/', label: 'Hjem' },
-      { href: '/portfolio', label: 'Portfolio' },
-      { href: '/priser', label: 'Priser' },
-      { href: '/om', label: 'Om' },
-      { href: '/kontakt', label: 'Kontakt' },
+      { href: '/da/', label: 'Hjem' },
+      { href: '/da/portfolio', label: 'Portfolio' },
+      { href: '/da/priser', label: 'Priser' },
+      { href: '/da/om', label: 'Om' },
+      { href: '/da/kontakt', label: 'Kontakt' },
     ]
   : [
       { href: '/en/', label: 'Home' },
@@ -31,7 +31,7 @@ const altLang = isDa
 
 <header class="site-header">
   <nav class="nav container" aria-label={isDa ? 'Primær navigation' : 'Primary navigation'}>
-    <a href={isDa ? '/' : '/en/'} class="nav-logo" aria-label="Arthur Aizikovich — forside">
+    <a href={isDa ? '/da/' : '/en/'} class="nav-logo" aria-label="Arthur Aizikovich — forside">
       AA
     </a>
 
@@ -53,7 +53,7 @@ const altLang = isDa
       <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
         {altLang.label}
       </a>
-      <a href={isDa ? '/kontakt' : '/en/contact'} class="nav-cta">
+      <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
         {isDa ? 'Book møde' : 'Book a call'}
       </a>
     </div>
