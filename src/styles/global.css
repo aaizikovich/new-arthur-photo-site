@@ -69,6 +69,11 @@ button {
   background: none;
 }
 
+/* Page top spacing — consistent across all pages */
+#main {
+  padding-block-start: var(--space-16);
+}
+
 /* Layout utilities */
 .container {
   width: 100%;
