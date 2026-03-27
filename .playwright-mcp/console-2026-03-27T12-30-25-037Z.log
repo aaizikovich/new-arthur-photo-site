@@ -1,9 +1,0 @@
-[     353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     454ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     490ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     504ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     521ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     549ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[     591ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/og/og-home.jpg:0
-[   10675ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/en/portfolio/first-shoot/:0
-[ 1697098ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:4321/:0
