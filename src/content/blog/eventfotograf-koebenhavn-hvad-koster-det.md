@@ -5,7 +5,7 @@ date: 2025-03-01
 locale: "da"
 draft: false
 tags: ["event", "priser", "guide", "københavn"]
-coverImage: "/og/og-home.jpg"
+coverImage: "/og/og-home.png"
 ---
 
 Priser på eventfotografering i København varierer enormt — fra DKK 2.000 for en studerende med et spejlreflekskamera til DKK 15.000+ for et erfaren hold med udstyr og erfaring fra internationale konferencer. Hvad skal du egentlig betale — og hvad får du for pengene?

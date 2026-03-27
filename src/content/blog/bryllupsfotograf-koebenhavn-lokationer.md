@@ -5,7 +5,7 @@ date: 2025-02-10
 locale: "da"
 draft: false
 tags: ["bryllup", "københavn", "lokationer", "tips"]
-coverImage: "/og/og-home.jpg"
+coverImage: "/og/og-home.png"
 ---
 
 Som bryllupsfotograf i København har jeg fotograferet på hundredvis af lokationer — fra slotte og kirker til hipsterkafeer og tagterrasser. Valget af lokation er ikke bare æstetik; det former direkte, hvilke billeder I kan forvente at gå hjem med.

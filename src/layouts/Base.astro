@@ -1,0 +1,54 @@
+---
+import { Font } from 'astro:assets';
+import SEO from '@/components/seo/SEO.astro';
+import Nav from '@/components/ui/Nav.astro';
+import Footer from '@/components/ui/Footer.astro';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  locale?: 'da' | 'en';
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  locale = 'da',
+  noindex = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <Font cssVariable="--font-heading" preload />
+    <Font cssVariable="--font-body" preload />
+    <Font cssVariable="--font-mono" />
+    <SEO
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      canonicalURL={canonicalURL}
+      locale={locale}
+      noindex={noindex}
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>

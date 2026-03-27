@@ -1,0 +1,160 @@
+---
+interface Props {
+  locale?: 'da' | 'en';
+}
+
+const { locale = 'da' } = Astro.props;
+
+const isDa = locale === 'da';
+const currentPath = Astro.url.pathname;
+
+const navLinks = isDa
+  ? [
+      { href: '/', label: 'Hjem' },
+      { href: '/portfolio', label: 'Portfolio' },
+      { href: '/priser', label: 'Priser' },
+      { href: '/om', label: 'Om' },
+      { href: '/kontakt', label: 'Kontakt' },
+    ]
+  : [
+      { href: '/en/', label: 'Home' },
+      { href: '/en/portfolio', label: 'Portfolio' },
+      { href: '/en/pricing', label: 'Pricing' },
+      { href: '/en/about', label: 'About' },
+      { href: '/en/contact', label: 'Contact' },
+    ];
+
+const altLang = isDa
+  ? { href: '/en/', label: 'EN' }
+  : { href: '/', label: 'DA' };
+---
+
+<header class="site-header">
+  <nav class="nav container" aria-label={isDa ? 'Primær navigation' : 'Primary navigation'}>
+    <a href={isDa ? '/' : '/en/'} class="nav-logo" aria-label="Arthur Aizikovich — forside">
+      AA
+    </a>
+
+    <ul class="nav-links" role="list">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class:list={['nav-link', { 'is-active': currentPath === href }]}
+            aria-current={currentPath === href ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="nav-actions">
+      <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
+        {altLang.label}
+      </a>
+      <a href={isDa ? '/kontakt' : '/en/contact'} class="nav-cta">
+        {isDa ? 'Book møde' : 'Book a call'}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in oklch, var(--color-bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: 3.5rem;
+  }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  .nav-logo:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-links {
+    display: none;
+    align-items: center;
+    gap: var(--space-6);
+    flex: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .nav-links {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--color-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.is-active {
+    color: var(--color-text);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline-start: auto;
+  }
+
+  .lang-switch {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color var(--transition-fast);
+  }
+
+  .lang-switch:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-cta {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    transition:
+      color var(--transition-fast),
+      border-color var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .nav-cta:hover {
+    color: var(--color-bg);
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+  }
+</style>

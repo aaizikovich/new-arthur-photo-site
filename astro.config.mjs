@@ -58,6 +58,11 @@ export default defineConfig({
   },
 
   vite: {
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
+    },
     build: {
       assetsInlineLimit: 0,
     },

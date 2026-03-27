@@ -1,0 +1,13 @@
+name = "aa-media-contact"
+compatibility_date = "2024-04-03"
+
+[vars]
+SITE_URL = "https://arthuraizikovich.com"
+
+# Cloudflare Pages project
+# Deploy via: npx wrangler pages deploy ./dist --project-name=arthuraizikovich
+
+# Rate limiting (add once KV namespace is created)
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT"
+# id = "<your-kv-namespace-id>"

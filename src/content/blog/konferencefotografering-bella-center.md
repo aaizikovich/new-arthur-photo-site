@@ -5,7 +5,7 @@ date: 2025-01-15
 locale: "da"
 draft: false
 tags: ["konference", "bella center", "københavn", "tips"]
-coverImage: "/og/og-home.jpg"
+coverImage: "/og/og-home.png"
 ---
 
 Bella Center i København er Danmarks største konferencecenter og hvert år ramme for hundredvis af internationale konferencer, messer og seminarer. Jeg har fotograferet adskillige arrangementer her — fra interkulturelle tech-summits til faglige fagforeningskongresser — og der er nogle ting, man bør vide, inden man booker en fotograf til stedet.

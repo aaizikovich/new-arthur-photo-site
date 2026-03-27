@@ -1,0 +1,170 @@
+---
+interface Props {
+  locale?: 'da' | 'en';
+}
+
+const { locale = 'da' } = Astro.props;
+const isDa = locale === 'da';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner container">
+    <div class="footer-brand">
+      <a href={isDa ? '/' : '/en/'} class="footer-logo">AA</a>
+      <p class="footer-tagline">
+        {isDa
+          ? 'Fotograf i København — bryllupper, konferencer, events'
+          : 'Copenhagen photographer — weddings, conferences, events'}
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label={isDa ? 'Sidefod navigation' : 'Footer navigation'}>
+      <ul role="list">
+        {isDa ? (
+          <>
+            <li><a href="/portfolio">Portfolio</a></li>
+            <li><a href="/priser">Priser</a></li>
+            <li><a href="/om">Om Arthur</a></li>
+            <li><a href="/kontakt">Kontakt</a></li>
+          </>
+        ) : (
+          <>
+            <li><a href="/en/portfolio">Portfolio</a></li>
+            <li><a href="/en/pricing">Pricing</a></li>
+            <li><a href="/en/about">About</a></li>
+            <li><a href="/en/contact">Contact</a></li>
+          </>
+        )}
+      </ul>
+    </nav>
+
+    <div class="footer-social">
+      <a
+        href="https://www.instagram.com/arthuraizikovich"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+      >
+        Instagram
+      </a>
+      <a
+        href="https://www.linkedin.com/in/arthuraizikovich"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-legal container">
+    <p>
+      &copy; {year} Arthur Aizikovich / AA Media &mdash; Copenhagen
+    </p>
+    <p>
+      <a href={isDa ? '/en/' : '/'} hreflang={isDa ? 'en' : 'da'}>
+        {isDa ? 'English' : 'Dansk'}
+      </a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: var(--space-24);
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 640px) {
+    .footer-inner {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+
+  .footer-logo {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: var(--color-text);
+    margin-block-end: var(--space-3);
+  }
+
+  .footer-logo:hover {
+    color: var(--color-accent);
+  }
+
+  .footer-tagline {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    max-width: 30ch;
+  }
+
+  .footer-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer-nav a {
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--color-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-text);
+  }
+
+  .footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer-social a {
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--color-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .footer-social a:hover {
+    color: var(--color-accent);
+  }
+
+  .footer-legal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-legal a {
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-legal a:hover {
+    color: var(--color-accent);
+  }
+</style>

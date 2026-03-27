@@ -1,0 +1,36 @@
+# Arthur Aizikovich / AA Media
+
+> Professional photographer based in Copenhagen, Denmark, specialising in conference photography, wedding photography, event documentation, and portraits.
+
+## About
+
+Arthur Aizikovich is a Copenhagen-based photographer (AA Media) serving clients across Denmark and Scandinavia. His work focuses on authentic storytelling through photography — capturing the decisive moments that define conferences, weddings, corporate events, and personal portraits.
+
+## Services
+
+- **Conference photography** — Full-day or half-day coverage of corporate conferences, seminars, and summits. Keynote speakers, panel discussions, networking, and delegate portraits.
+- **Wedding photography** — Documentary-style wedding coverage from preparations to reception. Delivered in warm, film-inspired tones.
+- **Event photography** — Product launches, galas, networking events, nightlife, and cultural events.
+- **Portrait photography** — Corporate headshots, personal branding, and editorial portraits.
+
+## Location
+
+Copenhagen, Denmark. Available across Denmark and internationally for destination assignments.
+
+## Contact
+
+Website: https://arthuraizikovich.com
+Instagram: https://www.instagram.com/arthuraizikovich
+LinkedIn: https://www.linkedin.com/in/arthuraizikovich
+
+## Pricing
+
+Packages from DKK 5,500. Custom quotes available for multi-day assignments and destination work.
+
+## Languages
+
+Danish (native), English (fluent), Russian (native)
+
+## Technical
+
+This site is built with Astro 6, hosted on Cloudflare Pages. Images are processed through Cloudflare Image Resizing. The site is available in Danish (default) and English (/en/).
