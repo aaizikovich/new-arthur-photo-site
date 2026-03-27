@@ -1,13 +1,10 @@
 import { defineConfig, fontProviders } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://arthuraizikovich.com',
 
-  adapter: cloudflare({
-    imageService: 'cloudflare-binding',
-  }),
+  output: 'static',
 
   integrations: [
     sitemap({
