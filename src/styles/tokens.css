@@ -32,3 +32,12 @@
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
 }
+
+[data-theme="dark"] {
+  --color-bg:      #111010;
+  --color-text:    #F0ECE6;
+  --color-accent:  #D4A043;
+  --color-muted:   #6B6560;
+  --color-surface: #1C1B1A;
+  --color-border:  #2C2A28;
+}

@@ -53,6 +53,9 @@ const altLang = isDa
       <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
         {altLang.label}
       </a>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+        <span class="theme-toggle-icon"></span>
+      </button>
       <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
         {isDa ? 'Book møde' : 'Book a call'}
       </a>
@@ -157,4 +160,59 @@ const altLang = isDa
     background-color: var(--color-text);
     border-color: var(--color-text);
   }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-muted);
+    transition: color var(--transition-fast);
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-text);
+  }
+
+  .theme-toggle-icon {
+    display: block;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    position: relative;
+    transition: box-shadow var(--transition-fast);
+  }
+
+  /* Light mode: sun */
+  .theme-toggle-icon::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: currentColor;
+    transition: transform var(--transition-base);
+  }
+
+  /* Dark mode: crescent */
+  [data-theme="dark"] .theme-toggle-icon::before {
+    transform: translateX(35%) scale(0.85);
+  }
 </style>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  btn?.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  });
+</script>
