@@ -33,10 +33,10 @@ const posts = (await getCollection('blog', ({ data }) =>
               })}
             </time>
             <h2 class="post-title">
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              <a href={`/da/blog/${post.id}`}>{post.data.title}</a>
             </h2>
             <p class="post-desc">{post.data.description}</p>
-            <a href={`/blog/${post.id}`} class="post-link" aria-hidden="true">
+            <a href={`/da/blog/${post.id}`} class="post-link" aria-hidden="true" tabindex="-1">
               Læs artikel →
             </a>
           </li>
@@ -48,7 +48,7 @@ const posts = (await getCollection('blog', ({ data }) =>
 
 <style>
   .page-header {
-    padding-block: var(--space-16) var(--space-12);
+    padding-block: 0 var(--space-12);
   }
 
   .eyebrow {

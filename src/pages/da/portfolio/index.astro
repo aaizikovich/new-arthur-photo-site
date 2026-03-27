@@ -31,7 +31,7 @@ const projects = (await getCollection('projects', ({ data }) =>
           {projects.map((project) => (
             <li class="project-card">
               {project.data.coverImage && (
-                <a href={`/portfolio/${project.id}`} class="project-thumb" tabindex="-1" aria-hidden="true">
+                <a href={`/da/portfolio/${project.id}`} class="project-thumb" tabindex="-1" aria-hidden="true">
                   <img
                     src={project.data.coverImage}
                     alt=""
@@ -44,7 +44,7 @@ const projects = (await getCollection('projects', ({ data }) =>
               )}
               <div class="project-meta">
                 <h2>
-                  <a href={`/portfolio/${project.id}`}>{project.data.title}</a>
+                  <a href={`/da/portfolio/${project.id}`}>{project.data.title}</a>
                 </h2>
                 {project.data.description && (
                   <p>{project.data.description}</p>

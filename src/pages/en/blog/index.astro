@@ -39,7 +39,7 @@ const posts = (await getCollection('blog', ({ data }) =>
                 <a href={`/en/blog/${post.id}`}>{post.data.title}</a>
               </h2>
               <p class="post-desc">{post.data.description}</p>
-              <a href={`/en/blog/${post.id}`} class="post-link" aria-hidden="true">
+              <a href={`/en/blog/${post.id}`} class="post-link" aria-hidden="true" tabindex="-1">
                 Read article →
               </a>
             </li>
@@ -52,7 +52,7 @@ const posts = (await getCollection('blog', ({ data }) =>
 
 <style>
   .page-header {
-    padding-block: var(--space-16) var(--space-12);
+    padding-block: 0 var(--space-12);
   }
 
   .eyebrow {
