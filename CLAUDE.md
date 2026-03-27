@@ -365,9 +365,9 @@ Update at end of every session:
 - [x] About / Om page (da + en, bio + 4 services + CTA)
 - [x] Services / Priser page (da + en, 4 pricing cards + FAQ schema)
 - [x] Contact / Kontakt page (da + en, ContactForm.astro + contact details)
-- [ ] Blog posts (venue SEO content)
+- [x] Blog posts (3 DA venue SEO articles: Bella Center, CPH wedding locations, event pricing guide)
 - [x] llms.txt
-- [ ] Sitemap + robots.txt
+- [x] Sitemap + robots.txt (@astrojs/sitemap, sitemap-index.xml, public/robots.txt)
 - [x] _headers + _redirects
 - [x] wrangler.toml
 - [ ] Performance audit (Lighthouse 100)

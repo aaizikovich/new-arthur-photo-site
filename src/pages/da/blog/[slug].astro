@@ -1,0 +1,198 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) =>
+    !data.draft && data.locale === 'da'
+  );
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, tags } = post.data;
+---
+
+<Base
+  title={`${title} — Arthur Aizikovich`}
+  description={description}
+  locale="da"
+>
+  <article class="blog-post">
+    <header class="post-header container">
+      <div class="post-meta">
+        {tags?.map((tag) => (
+          <span class="tag">#{tag}</span>
+        ))}
+        <time datetime={date.toISOString()}>
+          {date.toLocaleDateString('da-DK', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+      </div>
+      <h1>{title}</h1>
+      <p class="post-desc">{description}</p>
+    </header>
+
+    <div class="post-body container">
+      <Content />
+    </div>
+
+    <nav class="post-nav container">
+      <a href="/blog" class="back-link">← Alle artikler</a>
+      <a href="/kontakt" class="cta-link">Book fotograf →</a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .blog-post {
+    padding-block-end: var(--space-24);
+  }
+
+  .post-header {
+    padding-block: var(--space-16) var(--space-8);
+    max-width: var(--content-width);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-block-end: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .tag::before {
+    content: '#';
+    color: var(--color-accent);
+  }
+
+  .post-desc {
+    margin-block-start: var(--space-6);
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    max-width: 56ch;
+  }
+
+  .post-body {
+    max-width: var(--content-width);
+    padding-block-end: var(--space-12);
+  }
+
+  .post-body :global(p) {
+    margin-block-end: var(--space-6);
+    color: var(--color-muted);
+    line-height: 1.75;
+  }
+
+  .post-body :global(h2) {
+    margin-block: var(--space-10) var(--space-4);
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  .post-body :global(h3) {
+    margin-block: var(--space-8) var(--space-3);
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin-block-end: var(--space-6);
+    padding-inline-start: var(--space-6);
+    color: var(--color-muted);
+  }
+
+  .post-body :global(li) {
+    margin-block-end: var(--space-2);
+    line-height: 1.7;
+  }
+
+  .post-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block-end: var(--space-8);
+    font-size: 0.9rem;
+  }
+
+  .post-body :global(th) {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-muted);
+  }
+
+  .post-body :global(td) {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-muted);
+  }
+
+  .post-body :global(strong) {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .post-body :global(a) {
+    color: var(--color-text);
+    text-underline-offset: 3px;
+    transition: color var(--transition-fast);
+  }
+
+  .post-body :global(a:hover) {
+    color: var(--color-accent);
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block-start: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    max-width: var(--content-width);
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .back-link,
+  .cta-link {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link {
+    color: var(--color-muted);
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .cta-link {
+    color: var(--color-accent);
+  }
+
+  .cta-link:hover {
+    opacity: 0.7;
+  }
+</style>

@@ -1,5 +1,65 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  site: 'https://arthuraizikovich.com',
+
+  adapter: cloudflare({
+    imageService: 'cloudflare-binding',
+  }),
+
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'da',
+        locales: {
+          da: 'da-DK',
+          en: 'en-GB',
+        },
+      },
+    }),
+  ],
+
+  i18n: {
+    defaultLocale: 'da',
+    locales: ['da', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Fraunces',
+      cssVariable: '--font-heading',
+      styles: ['normal', 'italic'],
+      weights: [300, 400, 500],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'DM Sans',
+      cssVariable: '--font-body',
+      styles: ['normal'],
+      weights: [400, 500],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'DM Mono',
+      cssVariable: '--font-mono',
+      styles: ['normal'],
+      weights: [400],
+    },
+  ],
+
+  build: {
+    assets: '_astro',
+  },
+
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    },
+  },
+});
