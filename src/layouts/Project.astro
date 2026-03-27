@@ -1,0 +1,86 @@
+---
+import Base from './Base.astro';
+import Gallery from '@/components/gallery/Gallery.astro';
+import Lightbox from '@/components/gallery/Lightbox.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  locale?: 'da' | 'en';
+}
+
+const { project, locale = 'da' } = Astro.props;
+const { title, description, coverImage, date, tags, images } = project.data;
+---
+
+<Base
+  title={`${title} — Arthur Aizikovich`}
+  description={description}
+  ogImage={coverImage}
+  locale={locale}
+>
+  <article class="project-layout">
+    <header class="project-header container">
+      <div class="project-meta">
+        {tags?.map((tag: string) => (
+          <span class="tag">{tag}</span>
+        ))}
+        {date && (
+          <time datetime={date.toISOString()}>
+            {date.toLocaleDateString(locale === 'da' ? 'da-DK' : 'en-GB', {
+              year: 'numeric',
+              month: 'long',
+            })}
+          </time>
+        )}
+      </div>
+      <h1>{title}</h1>
+      {description && <p class="project-description">{description}</p>}
+    </header>
+
+    {images && images.length > 0 && (
+      <>
+        <div class="container">
+          <Gallery images={images} />
+        </div>
+        <Lightbox />
+      </>
+    )}
+
+    <slot />
+  </article>
+</Base>
+
+<style>
+  .project-layout {
+    padding-block: var(--space-16);
+  }
+
+  .project-header {
+    margin-block-end: var(--space-12);
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-block-end: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .tag::before {
+    content: '#';
+    color: var(--color-accent);
+  }
+
+  .project-description {
+    margin-block-start: var(--space-4);
+    font-size: 1.125rem;
+    color: var(--color-muted);
+  }
+</style>

@@ -1,0 +1,246 @@
+---
+interface Props {
+  locale?: 'da' | 'en';
+}
+
+const { locale = 'da' } = Astro.props;
+
+const t = {
+  da: {
+    name:        'Dit navn',
+    email:       'Din e-mail',
+    type:        'Type arrangement',
+    typeOptions: ['Konference', 'Bryllup', 'Event', 'Portræt', 'Andet'],
+    date:        'Dato / periode',
+    message:     'Fortæl mig om projektet',
+    send:        'Send besked',
+    sending:     'Sender…',
+    success:     'Tak! Jeg vender tilbage inden for 24 timer.',
+    error:       'Noget gik galt. Prøv igen eller skriv direkte til arthur@aamedia.dk',
+  },
+  en: {
+    name:        'Your name',
+    email:       'Your email',
+    type:        'Type of assignment',
+    typeOptions: ['Conference', 'Wedding', 'Event', 'Portrait', 'Other'],
+    date:        'Date / period',
+    message:     'Tell me about the project',
+    send:        'Send message',
+    sending:     'Sending…',
+    success:     'Thank you! I\'ll get back to you within 24 hours.',
+    error:       'Something went wrong. Try again or email arthur@aamedia.dk directly.',
+  },
+}[locale];
+---
+
+<form
+  class="contact-form"
+  id="contact-form"
+  method="POST"
+  action="/api/contact"
+  novalidate
+>
+  <div class="field">
+    <label for="name">{t.name}</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      autocomplete="name"
+      required
+    />
+  </div>
+
+  <div class="field">
+    <label for="email">{t.email}</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      autocomplete="email"
+      required
+    />
+  </div>
+
+  <div class="field">
+    <label for="type">{t.type}</label>
+    <select id="type" name="type">
+      {t.typeOptions.map((opt) => (
+        <option value={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="date">{t.date}</label>
+    <input
+      type="text"
+      id="date"
+      name="date"
+      placeholder={locale === 'da' ? 'f.eks. 15. august 2025' : 'e.g. 15 August 2025'}
+    />
+  </div>
+
+  <div class="field field--full">
+    <label for="message">{t.message}</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      required
+    ></textarea>
+  </div>
+
+  <div class="form-footer">
+    <button type="submit" class="submit-btn" id="submit-btn">
+      {t.send}
+    </button>
+    <p class="form-status" id="form-status" aria-live="polite"></p>
+  </div>
+</form>
+
+<script define:vars={{ t }}>
+  const form = document.getElementById('contact-form');
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('form-status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !btn || !status) return;
+
+    btn.disabled = true;
+    btn.textContent = t.sending;
+    status.textContent = '';
+    status.className = 'form-status';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+
+      if (res.ok) {
+        status.textContent = t.success;
+        status.classList.add('is-success');
+        form.reset();
+      } else {
+        throw new Error('non-ok response');
+      }
+    } catch {
+      status.textContent = t.error;
+      status.classList.add('is-error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = t.send;
+    }
+  });
+</script>
+
+<style>
+  .contact-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .contact-form {
+      grid-template-columns: 1fr 1fr;
+    }
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    appearance: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8480' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-4) center;
+    padding-right: var(--space-8);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 140px;
+  }
+
+  .form-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .submit-btn {
+    display: inline-block;
+    padding: var(--space-3) var(--space-8);
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background-color: var(--color-accent);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .form-status.is-success {
+    color: #4a7c59;
+  }
+
+  .form-status.is-error {
+    color: #b84040;
+  }
+</style>

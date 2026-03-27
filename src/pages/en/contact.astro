@@ -1,0 +1,146 @@
+---
+import Base from '@/layouts/Base.astro';
+import ContactForm from '@/components/ui/ContactForm.astro';
+---
+
+<Base
+  title="Contact — Arthur Aizikovich Copenhagen Photographer"
+  description="Book Arthur Aizikovich for your next event. Conferences, weddings and events in Copenhagen and across Denmark."
+  locale="en"
+>
+  <article>
+    <header class="page-header container">
+      <p class="eyebrow">Contact</p>
+      <h1>Let's talk about your project</h1>
+      <p class="lead">
+        Fill in the form below, send an email, or find me on LinkedIn.
+        I typically reply within 24 hours.
+      </p>
+    </header>
+
+    <section class="contact-layout container">
+      <div class="form-col">
+        <ContactForm locale="en" />
+      </div>
+
+      <aside class="info-col">
+        <dl class="contact-details">
+          <div class="detail">
+            <dt>Email</dt>
+            <dd>
+              <a href="mailto:arthur@aamedia.dk">arthur@aamedia.dk</a>
+            </dd>
+          </div>
+          <div class="detail">
+            <dt>Instagram</dt>
+            <dd>
+              <a
+                href="https://www.instagram.com/arthuraizikovich"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @arthuraizikovich
+              </a>
+            </dd>
+          </div>
+          <div class="detail">
+            <dt>LinkedIn</dt>
+            <dd>
+              <a
+                href="https://www.linkedin.com/in/arthuraizikovich"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                arthuraizikovich
+              </a>
+            </dd>
+          </div>
+          <div class="detail">
+            <dt>Based in</dt>
+            <dd>Copenhagen, Denmark</dd>
+          </div>
+          <div class="detail">
+            <dt>Response time</dt>
+            <dd>Within 24 hours</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: var(--space-16) var(--space-12);
+    max-width: var(--content-width);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-4);
+  }
+
+  .lead {
+    margin-block-start: var(--space-6);
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    max-width: 52ch;
+  }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    padding-block-end: var(--space-24);
+  }
+
+  @media (min-width: 1024px) {
+    .contact-layout {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-block-start: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 1024px) {
+    .contact-details {
+      border-top: none;
+      border-left: 1px solid var(--color-border);
+      padding-block-start: 0;
+      padding-inline-start: var(--space-8);
+    }
+  }
+
+  .detail dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-1);
+  }
+
+  .detail dd {
+    font-size: 0.9375rem;
+  }
+
+  .detail dd a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .detail dd a:hover {
+    color: var(--color-accent);
+  }
+</style>

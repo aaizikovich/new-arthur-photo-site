@@ -1,0 +1,355 @@
+---
+import Base from '@/layouts/Base.astro';
+import FAQSchema from '@/components/seo/FAQSchema.astro';
+
+const faqItems = [
+  {
+    question: 'Hvad er inkluderet i prisen?',
+    answer: 'Alle pakker inkluderer forberedelse, fotografering på dagen, billedudvælgelse og professionel retuschering. Billeder leveres som højopløselige filer via et privat online-galleri.',
+  },
+  {
+    question: 'Hvor hurtigt modtager jeg billederne?',
+    answer: 'Typisk inden for 5–7 hverdage efter arrangementet. Ved store konferencer eller særlige ønsker aftaler vi leveringstid på forhånd.',
+  },
+  {
+    question: 'Hvad sker der, hvis arrangementet løber over tid?',
+    answer: 'Ekstra timer faktureres efter aftale. Jeg informerer dig altid i god tid, så der ikke er overraskelser.',
+  },
+  {
+    question: 'Rejser du til opgaver uden for København?',
+    answer: 'Ja — jeg tager opgaver over hele Danmark og internationalt. Rejseomkostninger aftales separat.',
+  },
+  {
+    question: 'Kan jeg bestille en pakke tilpasset mine behov?',
+    answer: 'Absolut. Skriv til mig med dine ønsker, og jeg sender et skræddersyet tilbud inden 24 timer.',
+  },
+];
+---
+
+<Base
+  title="Priser — Arthur Aizikovich Fotograf København"
+  description="Priser for konference-, bryllups- og eventfotografi i København. Pakker fra DKK 5.500. Kontakt for skræddersyet tilbud."
+  locale="da"
+>
+  <FAQSchema slot="head" items={faqItems} />
+
+  <article>
+    <header class="page-header container">
+      <p class="eyebrow">Priser</p>
+      <h1>Gennemsigtige priser</h1>
+      <p class="lead">
+        Faste pakkepriser — ingen skjulte gebyrer. Kontakt for skræddersyet tilbud.
+      </p>
+    </header>
+
+    <section class="pricing container">
+      <ul class="pricing-grid" role="list">
+        <li class="pricing-card">
+          <div class="card-header">
+            <span class="card-index">01</span>
+            <h2>Konference</h2>
+          </div>
+          <p class="card-price">
+            <span class="price-from">fra</span>
+            <strong>DKK 6.000</strong>
+            <span class="price-unit">/ halv dag DKK 3.500</span>
+          </p>
+          <ul class="card-features" role="list">
+            <li>Op til 8 timers dækning</li>
+            <li>Keynotes, panels, netværk</li>
+            <li>Delegatportrætter inkl.</li>
+            <li>120+ retoucherede billeder</li>
+            <li>Levering: 5–7 hverdage</li>
+          </ul>
+          <a href="/kontakt" class="card-cta">Book konference</a>
+        </li>
+
+        <li class="pricing-card">
+          <div class="card-header">
+            <span class="card-index">02</span>
+            <h2>Bryllup</h2>
+          </div>
+          <p class="card-price">
+            <span class="price-from">fra</span>
+            <strong>DKK 12.000</strong>
+            <span class="price-unit">/ heldagspakke</span>
+          </p>
+          <ul class="card-features" role="list">
+            <li>Forberedelse til fest</li>
+            <li>Op til 10 timers dækning</li>
+            <li>300+ retoucherede billeder</li>
+            <li>Online-galleri i 12 mdr.</li>
+            <li>Levering: 3–4 uger</li>
+          </ul>
+          <a href="/kontakt" class="card-cta">Book bryllup</a>
+        </li>
+
+        <li class="pricing-card">
+          <div class="card-header">
+            <span class="card-index">03</span>
+            <h2>Event</h2>
+          </div>
+          <p class="card-price">
+            <span class="price-from">fra</span>
+            <strong>DKK 5.500</strong>
+            <span class="price-unit">/ op til 4 timer</span>
+          </p>
+          <ul class="card-features" role="list">
+            <li>Galaer, produktlanceringer</li>
+            <li>Natteliv &amp; kulturelle events</li>
+            <li>80+ retoucherede billeder</li>
+            <li>Hurtig levering mulig</li>
+            <li>Levering: 5–7 hverdage</li>
+          </ul>
+          <a href="/kontakt" class="card-cta">Book event</a>
+        </li>
+
+        <li class="pricing-card">
+          <div class="card-header">
+            <span class="card-index">04</span>
+            <h2>Portræt &amp; headshots</h2>
+          </div>
+          <p class="card-price">
+            <span class="price-from">fra</span>
+            <strong>DKK 2.500</strong>
+            <span class="price-unit">/ op til 1 time</span>
+          </p>
+          <ul class="card-features" role="list">
+            <li>Corporate headshots</li>
+            <li>Personlig branding</li>
+            <li>20+ retoucherede billeder</li>
+            <li>Valgfri lokation</li>
+            <li>Levering: 3–5 hverdage</li>
+          </ul>
+          <a href="/kontakt" class="card-cta">Book portræt</a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="faq container">
+      <h2 class="section-label">Ofte stillede spørgsmål</h2>
+      <dl class="faq-list">
+        {faqItems.map(({ question, answer }) => (
+          <div class="faq-item">
+            <dt>{question}</dt>
+            <dd>{answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="cta-strip container">
+      <p class="cta-text">Har du brug for noget skræddersyet?</p>
+      <a href="/kontakt" class="cta-btn">Få et tilbud</a>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: var(--space-16) var(--space-12);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-4);
+  }
+
+  .lead {
+    margin-block-start: var(--space-6);
+    font-size: 1.125rem;
+    color: var(--color-muted);
+    max-width: 52ch;
+  }
+
+  /* Pricing grid */
+  .pricing {
+    padding-block-end: var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .pricing-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pricing-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .pricing-card {
+    padding: var(--space-8);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .card-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+  }
+
+  .card-header h2 {
+    font-size: 1.125rem;
+    font-weight: 400;
+  }
+
+  .card-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .price-from {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .card-price strong {
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .price-unit {
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    width: 100%;
+  }
+
+  .card-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .card-features li {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    padding-inline-start: var(--space-4);
+    position: relative;
+  }
+
+  .card-features li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.75rem;
+  }
+
+  .card-cta {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    text-align: center;
+    text-decoration: none;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+    margin-block-start: auto;
+  }
+
+  .card-cta:hover {
+    background-color: var(--color-accent);
+  }
+
+  /* FAQ */
+  .faq {
+    padding-block: var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-8);
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: var(--content-width);
+  }
+
+  .faq-item {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-item dt {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-block-end: var(--space-3);
+  }
+
+  .faq-item dd {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    max-width: 60ch;
+  }
+
+  /* CTA strip */
+  .cta-strip {
+    padding-block: var(--space-16);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .cta-text {
+    font-size: 1.25rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: var(--space-3) var(--space-8);
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--color-accent);
+  }
+</style>

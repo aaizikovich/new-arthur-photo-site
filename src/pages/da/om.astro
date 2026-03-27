@@ -1,0 +1,229 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+
+<Base
+  title="Om Arthur Aizikovich — Fotograf i København"
+  description="Mød Arthur Aizikovich — fotograf med base i København. Specialiserer sig i konference-, bryllups- og eventfotografi med øje for ægte øjeblikke."
+  locale="da"
+>
+  <article>
+    <header class="page-header container">
+      <p class="eyebrow">Om mig</p>
+      <h1>Arthur Aizikovich</h1>
+      <p class="lead">
+        Fotograf med base i København — med speciale i konferencer, bryllupper og events.
+      </p>
+    </header>
+
+    <section class="bio container">
+      <div class="bio-text">
+        <p>
+          Jeg er fotograf og indehaver af AA Media. Mit arbejde drejer sig om at fange de øjeblikke, der fortæller historien bag arrangementet — det spontane blik under en keynote, nervøsiteten inden brudens entré, energien i netværksrummet.
+        </p>
+        <p>
+          Jeg har fotograferet alt fra internationale tech-konferencer med 1.000+ deltagere til intime bryllupper og natklubaftener. Hver opgave tilgår jeg med det samme udgangspunkt: minimal forstyrrelse, maksimal ægthed.
+        </p>
+        <p>
+          Ud over fotografi arbejder jeg med billedredigering og leverer altid et kurateret udvalg af retoucherede billeder inden for den aftalte frist — typisk 5–7 hverdage.
+        </p>
+      </div>
+
+      <aside class="bio-facts">
+        <dl class="facts-list">
+          <div class="fact">
+            <dt>Base</dt>
+            <dd>København, Danmark</dd>
+          </div>
+          <div class="fact">
+            <dt>Tilgængelighed</dt>
+            <dd>Danmark + internationale opgaver</dd>
+          </div>
+          <div class="fact">
+            <dt>Sprog</dt>
+            <dd>Dansk · Engelsk · Russisk</dd>
+          </div>
+          <div class="fact">
+            <dt>Leveringstid</dt>
+            <dd>5–7 hverdage</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="services-grid container">
+      <h2 class="section-label">Specialer</h2>
+      <ul class="services" role="list">
+        <li class="service-item">
+          <span class="service-index">01</span>
+          <h3>Konferencefotografering</h3>
+          <p>Keynotes, paneldiskussioner, netværk og delegatportrætter. Diskret og professionel dækning af hele arrangementet.</p>
+        </li>
+        <li class="service-item">
+          <span class="service-index">02</span>
+          <h3>Bryllupsfotografering</h3>
+          <p>Dokumentarisk stil fra forberedelse til fest. Varme toner, naturligt lys og de rigtige øjeblikke.</p>
+        </li>
+        <li class="service-item">
+          <span class="service-index">03</span>
+          <h3>Eventfotografering</h3>
+          <p>Produktlanceringer, galaer, natteliv og kulturelle events. Energien i billedet, ikke blot dokumentationen.</p>
+        </li>
+        <li class="service-item">
+          <span class="service-index">04</span>
+          <h3>Portræt &amp; headshots</h3>
+          <p>Corporate headshots og personlig branding. Naturlige og professionelle billeder til LinkedIn, hjemmesider og presse.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="cta-strip container">
+      <p class="cta-text">Klar til at tale om dit næste projekt?</p>
+      <a href="/kontakt" class="cta-btn">Book en samtale</a>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .page-header {
+    padding-block: var(--space-16) var(--space-12);
+    max-width: var(--content-width);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-4);
+  }
+
+  .lead {
+    margin-block-start: var(--space-6);
+    font-size: 1.25rem;
+    color: var(--color-muted);
+    max-width: 52ch;
+  }
+
+  .bio {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    padding-block-end: var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 1024px) {
+    .bio {
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-16);
+    }
+  }
+
+  .bio-text p {
+    margin-block-end: var(--space-6);
+    color: var(--color-muted);
+    max-width: 60ch;
+  }
+
+  .facts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .fact dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-1);
+  }
+
+  .fact dd {
+    font-size: 0.9375rem;
+  }
+
+  .services-grid {
+    padding-block: var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-block-end: var(--space-8);
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .services {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .service-item {
+    padding-block-start: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .service-index {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    margin-block-end: var(--space-3);
+  }
+
+  .service-item h3 {
+    font-size: 1.0625rem;
+    font-weight: 400;
+    margin-block-end: var(--space-3);
+  }
+
+  .service-item p {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+  }
+
+  .cta-strip {
+    padding-block: var(--space-16);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .cta-text {
+    font-size: 1.25rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: var(--space-3) var(--space-8);
+    background: var(--color-text);
+    color: var(--color-bg);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .cta-btn:hover {
+    background-color: var(--color-accent);
+  }
+</style>
