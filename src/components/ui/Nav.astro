@@ -7,6 +7,8 @@ const { locale = 'da' } = Astro.props;
 
 const isDa = locale === 'da';
 const currentPath = Astro.url.pathname;
+// Normalize for active-link comparison: strip trailing slash except for root "/"
+const normPath = (p: string) => (p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p);
 
 const navLinks = isDa
   ? [
@@ -65,8 +67,8 @@ const altLang = isDa
         <li>
           <a
             href={href}
-            class:list={['nav-link', { 'is-active': currentPath === href }]}
-            aria-current={currentPath === href ? 'page' : undefined}
+            class:list={['nav-link', { 'is-active': normPath(currentPath) === normPath(href) }]}
+            aria-current={normPath(currentPath) === normPath(href) ? 'page' : undefined}
           >
             {label}
           </a>
@@ -78,7 +80,7 @@ const altLang = isDa
       <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
         {altLang.label}
       </a>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
+      <button id="theme-toggle" class="theme-toggle" aria-label={isDa ? 'Skift farvetema' : 'Toggle colour theme'} title={isDa ? 'Skift farvetema' : 'Toggle colour theme'} type="button">
         <span class="theme-toggle-icon"></span>
       </button>
       <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
@@ -105,8 +107,8 @@ const altLang = isDa
         <li>
           <a
             href={href}
-            class:list={['mobile-link', { 'is-active': currentPath === href }]}
-            aria-current={currentPath === href ? 'page' : undefined}
+            class:list={['mobile-link', { 'is-active': normPath(currentPath) === normPath(href) }]}
+            aria-current={normPath(currentPath) === normPath(href) ? 'page' : undefined}
           >
             {label}
           </a>
