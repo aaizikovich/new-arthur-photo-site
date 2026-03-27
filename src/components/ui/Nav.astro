@@ -24,9 +24,36 @@ const navLinks = isDa
       { href: '/en/contact', label: 'Contact' },
     ];
 
+const daToEn: Record<string, string> = {
+  '/da/':          '/en/',
+  '/da/portfolio': '/en/portfolio',
+  '/da/priser':    '/en/pricing',
+  '/da/om':        '/en/about',
+  '/da/kontakt':   '/en/contact',
+  '/da/blog':      '/en/blog',
+};
+const enToDa: Record<string, string> = Object.fromEntries(
+  Object.entries(daToEn).map(([da, en]) => [en, da])
+);
+
+function altLangUrl(path: string): string {
+  const clean = path.replace(/\/$/, '') || '/';
+  if (isDa) {
+    // Exact match (static pages)
+    if (daToEn[path]) return daToEn[path];
+    if (daToEn[clean]) return daToEn[clean];
+    // Dynamic routes: /da/portfolio/slug → /en/portfolio/slug
+    return path.replace(/^\/da\//, '/en/');
+  } else {
+    if (enToDa[path]) return enToDa[path];
+    if (enToDa[clean]) return enToDa[clean];
+    return path.replace(/^\/en\//, '/da/');
+  }
+}
+
 const altLang = isDa
-  ? { href: '/en/', label: 'EN' }
-  : { href: '/', label: 'DA' };
+  ? { href: altLangUrl(currentPath), label: 'EN' }
+  : { href: altLangUrl(currentPath), label: 'DA' };
 ---
 
 <header class="site-header">

@@ -6,6 +6,27 @@ interface Props {
 const { locale = 'da' } = Astro.props;
 const isDa = locale === 'da';
 const year = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
+
+const daToEn: Record<string, string> = {
+  '/da/':          '/en/',
+  '/da/portfolio': '/en/portfolio',
+  '/da/priser':    '/en/pricing',
+  '/da/om':        '/en/about',
+  '/da/kontakt':   '/en/contact',
+  '/da/blog':      '/en/blog',
+};
+const enToDa: Record<string, string> = Object.fromEntries(
+  Object.entries(daToEn).map(([da, en]) => [en, da])
+);
+function altLangUrl(path: string): string {
+  const clean = path.replace(/\/$/, '') || '/';
+  if (isDa) {
+    return daToEn[path] ?? daToEn[clean] ?? path.replace(/^\/da\//, '/en/');
+  } else {
+    return enToDa[path] ?? enToDa[clean] ?? path.replace(/^\/en\//, '/da/');
+  }
+}
 ---
 
 <footer class="site-footer">
@@ -64,7 +85,7 @@ const year = new Date().getFullYear();
       &copy; {year} Arthur Aizikovich / AA Media &mdash; Copenhagen
     </p>
     <p>
-      <a href={isDa ? '/en/' : '/'} hreflang={isDa ? 'en' : 'da'}>
+      <a href={altLangUrl(currentPath)} hreflang={isDa ? 'en' : 'da'}>
         {isDa ? 'English' : 'Dansk'}
       </a>
     </p>
