@@ -1,36 +1,46 @@
 ---
-/**
- * Lightbox — click-to-enlarge overlay for Gallery.astro.
- *
- * Astro .astro components cannot use client: directives on themselves —
- * that's reserved for UI-framework components. The equivalent of
- * `client:visible` is achieved here with IntersectionObserver: the JS
- * is only initialised once the gallery enters the viewport.
- */
+interface Props {
+  locale?: 'da' | 'en';
+}
+
+const { locale = 'da' } = Astro.props;
+
+const t = locale === 'da'
+  ? {
+      dialog:  'Billedvisning',
+      close:   'Luk billedvisning',
+      prev:    'Forrige billede',
+      next:    'Næste billede',
+    }
+  : {
+      dialog:  'Image viewer',
+      close:   'Close image viewer',
+      prev:    'Previous image',
+      next:    'Next image',
+    };
 ---
 
-<!-- Lightbox overlay (hidden until triggered) -->
 <div
   class="lightbox"
   id="lightbox"
   role="dialog"
   aria-modal="true"
-  aria-label="Billedvisning"
+  aria-label={t.dialog}
   aria-hidden="true"
 >
-  <button class="lightbox-close" id="lightbox-close" aria-label="Luk billedvisning" type="button">
+  <button class="lightbox-close" id="lightbox-close" aria-label={t.close} type="button">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path d="M18 6 6 18M6 6l12 12"/>
     </svg>
   </button>
 
-  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Forrige billede" type="button">
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label={t.prev} type="button">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path d="m15 18-6-6 6-6"/>
     </svg>
   </button>
 
-  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Næste billede" type="button">
+  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label={t.next} type="button">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path d="m9 18 6-6-6-6"/>
     </svg>
@@ -76,32 +86,26 @@
   // ─── Init ────────────────────────────────────────────────────────────────────
 
   function initLightbox() {
-    // Collect all trigger data once
     const triggers = gallery!.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]');
     images = Array.from(triggers).map((t) => ({
       src: t.dataset.src ?? '',
       alt: t.dataset.alt ?? '',
     }));
 
-    // Open on click
     triggers.forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const idx = Number(trigger.dataset.index ?? 0);
-        openLightbox(idx);
+        openLightbox(Number(trigger.dataset.index ?? 0));
       });
     });
 
-    // Controls
     document.getElementById('lightbox-close')?.addEventListener('click', closeLightbox);
     document.getElementById('lightbox-prev')?.addEventListener('click', () => navigate(-1));
     document.getElementById('lightbox-next')?.addEventListener('click', () => navigate(1));
 
-    // Click backdrop to close
     document.getElementById('lightbox')?.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).id === 'lightbox') closeLightbox();
     });
 
-    // Keyboard
     document.addEventListener('keydown', handleKey);
   }
 
@@ -115,7 +119,6 @@
     lb.setAttribute('aria-hidden', 'false');
     lb.classList.add('is-open');
 
-    // Trap focus — return focus on close
     document.body.style.overflow = 'hidden';
     document.getElementById('lightbox-close')?.focus();
   }
@@ -126,10 +129,7 @@
     lb.classList.remove('is-open');
     document.body.style.overflow = '';
 
-    // Return focus to the trigger that opened it
-    const trigger = gallery!.querySelector<HTMLButtonElement>(
-      `[data-index="${currentIndex}"]`
-    );
+    const trigger = gallery!.querySelector<HTMLButtonElement>(`[data-index="${currentIndex}"]`);
     trigger?.focus();
   }
 
@@ -151,7 +151,6 @@
     img.alt = alt;
     caption.textContent = alt;
 
-    // Hide prev/next when only one image
     const prevBtn = document.getElementById('lightbox-prev') as HTMLButtonElement;
     const nextBtn = document.getElementById('lightbox-next') as HTMLButtonElement;
     const single = images.length === 1;
@@ -159,15 +158,33 @@
     nextBtn.hidden = single;
   }
 
-  // ─── Keyboard ────────────────────────────────────────────────────────────────
+  // ─── Keyboard + Focus Trap ───────────────────────────────────────────────────
 
   function handleKey(e: KeyboardEvent) {
     const lb = document.getElementById('lightbox');
     if (!lb?.classList.contains('is-open')) return;
 
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') navigate(-1);
-    if (e.key === 'ArrowRight') navigate(1);
+    if (e.key === 'Escape') { closeLightbox(); return; }
+    if (e.key === 'ArrowLeft') { navigate(-1); return; }
+    if (e.key === 'ArrowRight') { navigate(1); return; }
+
+    // Focus trap — cycle within visible lightbox buttons
+    if (e.key === 'Tab') {
+      const focusable = Array.from(
+        lb.querySelectorAll<HTMLElement>('button:not([hidden])')
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   }
 </script>
 
@@ -178,7 +195,8 @@
     z-index: 900;
     display: grid;
     place-items: center;
-    background: color-mix(in srgb, var(--color-text) 90%, transparent);
+    /* Fixed dark overlay — does not use --color-text so it stays dark in both themes */
+    background: rgb(10 10 10 / 0.92);
     padding: var(--space-8) var(--gutter);
     opacity: 0;
     pointer-events: none;
@@ -190,7 +208,6 @@
     pointer-events: all;
   }
 
-  /* Motion preference */
   @media (prefers-reduced-motion: reduce) {
     .lightbox { transition: none; }
   }
@@ -221,25 +238,25 @@
   .lightbox-caption {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    color: rgb(240 236 230 / 0.6);
     letter-spacing: 0.05em;
     text-align: center;
     max-width: 60ch;
   }
 
-  /* Close button */
+  /* Close button — 44×44px touch target */
   .lightbox-close {
     position: fixed;
     top: var(--space-6);
     right: var(--space-6);
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid color-mix(in srgb, var(--color-bg) 30%, transparent);
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid rgb(240 236 230 / 0.25);
     border-radius: 50%;
     background: transparent;
-    color: var(--color-bg);
+    color: rgb(240 236 230 / 0.85);
     cursor: pointer;
     transition: border-color var(--transition-fast), color var(--transition-fast);
   }
@@ -260,9 +277,9 @@
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
-    border: 1px solid color-mix(in srgb, var(--color-bg) 25%, transparent);
+    border: 1px solid rgb(240 236 230 / 0.2);
     background: transparent;
-    color: var(--color-bg);
+    color: rgb(240 236 230 / 0.85);
     cursor: pointer;
     transition: border-color var(--transition-fast), color var(--transition-fast);
   }

@@ -26,7 +26,7 @@ const { title, description, date, tags } = post.data;
     <header class="post-header container">
       <div class="post-meta">
         {tags?.map((tag) => (
-          <span class="tag">#{tag}</span>
+          <span class="tag">{tag}</span>
         ))}
         <time datetime={date.toISOString()}>
           {date.toLocaleDateString('en-GB', {

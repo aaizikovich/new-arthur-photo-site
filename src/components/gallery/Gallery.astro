@@ -11,13 +11,14 @@ export interface GalleryImage {
 
 interface Props {
   images: GalleryImage[];
+  locale?: 'da' | 'en';
 }
 
-const { images = [] } = Astro.props;
+const { images = [], locale = 'da' } = Astro.props;
 ---
 
 {images.length > 0 && (
-  <section class="gallery" data-gallery aria-label="Billedgalleri">
+  <section class="gallery" data-gallery aria-label={locale === 'da' ? 'Billedgalleri' : 'Photo gallery'}>
     {images.map((image, i) => (
       <button
         class="gallery-item"
@@ -25,7 +26,7 @@ const { images = [] } = Astro.props;
         data-index={i}
         data-src={image.src}
         data-alt={image.alt}
-        aria-label={`Vis billede: ${image.alt}`}
+        aria-label={locale === 'da' ? `Vis billede: ${image.alt}` : `View image: ${image.alt}`}
         type="button"
       >
         <img

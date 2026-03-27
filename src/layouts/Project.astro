@@ -41,9 +41,9 @@ const { title, description, coverImage, date, tags, images } = project.data;
     {images && images.length > 0 && (
       <>
         <div class="container">
-          <Gallery images={images} />
+          <Gallery images={images} locale={locale} />
         </div>
-        <Lightbox />
+        <Lightbox locale={locale} />
       </>
     )}
 
