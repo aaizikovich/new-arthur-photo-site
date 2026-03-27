@@ -6,60 +6,23 @@ Portfolio + booking site for Arthur Aizikovich (AA Media), Copenhagen photograph
 Primary services: weddings, conferences, events, portraits, nightlife.
 Domain: arthuraizikovich.com
 
----
-
-## ⚡ FOUNDATION BUILD — READ THIS FIRST
-
-Only stop if you hit a genuine blocker (missing credential, ambiguous architecture decision).
-When done, print a summary of everything created and update CURRENT BUILD STATUS.
-
-### Build order (execute all, in sequence):
-
-1. Install Astro 6 + `@astrojs/cloudflare` adapter
-2. Write `astro.config.mjs` — i18n + imageService + fonts config
-3. `src/styles/tokens.css` — full design token system
-4. `src/styles/transitions.css` — CSS-native view transitions (no JS)
-5. `src/styles/global.css` — resets + base styles
-6. `src/layouts/Base.astro` — font preload, meta, view transition import
-7. `src/layouts/Project.astro` — project page layout
-8. `src/components/ui/Nav.astro`
-9. `src/components/ui/Footer.astro`
-10. `src/components/seo/SEO.astro` — canonical, OG, hreflang, JSON-LD slot
-11. `src/components/seo/LocalBusinessSchema.astro`
-12. `src/components/seo/FAQSchema.astro`
-13. `src/content.config.ts` — Zod schemas for content collections (Astro 6 location)
-14. `src/pages/da/index.astro` — Danish home (stub, content from collection)
-15. `src/pages/en/index.astro` — English home (stub, content from collection)
-16. `src/pages/da/om.astro` — stub
-17. `src/pages/en/about.astro` — stub
-18. `src/pages/da/priser.astro` — stub
-19. `src/pages/en/pricing.astro` — stub
-20. `src/pages/da/kontakt.astro` — stub
-21. `src/pages/en/contact.astro` — stub
-22. `src/pages/da/portfolio/[slug].astro` — dynamic route stub
-23. `src/pages/en/portfolio/[slug].astro` — dynamic route stub
-24. `src/utils/image.ts` — srcset builder helper
-25. `src/utils/schema.ts` — JSON-LD factory functions
-26. `public/llms.txt` — AI-agent summary for GEO visibility
-27. `_headers` — Cloudflare cache + security headers
-28. `_redirects` — www → apex redirect
-29. `wrangler.toml` — Cloudflare Worker stub for contact form
-30. `git add . && git commit -m "feat: foundation build — Astro 6 + CF adapter + i18n + design system" && git push`
+**Status: Foundation is fully built and live at `new-arthur-photo-site.pages.dev`.
+All sessions are feature/fix work — do NOT re-scaffold anything.**
 
 ---
 
 ## Tech stack
 
-- **Framework:** Astro 6 (static output by default)
-- **Adapter:** `@astrojs/cloudflare` — Cloudflare Pages + Workers
-- **Image pipeline:** `imageService: 'cloudflare-binding'` — no Cloudinary, no external SaaS
+- **Framework:** Astro 6 (`output: 'static'` — no SSR adapter)
+- **Hosting:** Cloudflare Pages (static files) — NOT Vercel, NOT CF Workers adapter
+- **Image pipeline:** Standard `<img>` / `<Picture />` — no Cloudinary, no CF image binding
 - **CMS:** Decap CMS (git-based, markdown files, no database)
 - **CSS:** Custom properties only — no Tailwind
 - **TypeScript:** preferred throughout
 - **JS:** minimal — `client:visible` islands only where genuinely needed
 - **Fonts:** Astro 6 built-in Fonts API — self-hosted at build time, NOT Google Fonts CDN
 - **Video:** Vimeo embeds only, always with `dnt` parameter
-- **Hosting:** Cloudflare Pages — NOT Vercel
+- **Path alias:** `@/` maps to `src/` — use in all internal imports
 
 ---
 
@@ -77,14 +40,17 @@ npm run preview  # preview production build
 ```
 src/
   pages/
-    da/                     # Danish — default locale, no URL prefix
-      index.astro           # /
-      om.astro              # /om
-      kontakt.astro         # /kontakt
-      priser.astro          # /priser
+    da/                     # Danish — prefixDefaultLocale: true, so URLs are /da/*, /da/portfolio, etc.
+      index.astro           # /da/
+      om.astro              # /da/om
+      kontakt.astro         # /da/kontakt
+      priser.astro          # /da/priser
       portfolio/
-        index.astro         # /portfolio
-        [slug].astro
+        index.astro         # /da/portfolio
+        [slug].astro        # /da/portfolio/[slug]
+      blog/
+        index.astro         # /da/blog
+        [slug].astro        # /da/blog/[slug]
     en/                     # English — /en/* prefix
       index.astro           # /en/
       about.astro           # /en/about
@@ -93,6 +59,9 @@ src/
       portfolio/
         index.astro         # /en/portfolio
         [slug].astro
+      blog/
+        index.astro         # /en/blog
+        [slug].astro
   components/
     seo/
       SEO.astro
@@ -100,18 +69,17 @@ src/
       FAQSchema.astro
     gallery/
       Gallery.astro
-      Image.astro
-      Lightbox.astro        # client:visible island
+      Lightbox.astro        # lazy-initialised via IntersectionObserver
     ui/
-      Nav.astro
+      Nav.astro             # includes dark mode toggle + hamburger mobile menu
       Footer.astro
-      ContactForm.astro     # client:visible island
+      ContactForm.astro
   content/
     projects/               # one .md per project
     blog/                   # one .md per blog post
   content.config.ts         # Astro 6 content collection config (at src/ root)
   layouts/
-    Base.astro
+    Base.astro              # dark mode anti-flash script is inline in <head>
     Project.astro
   styles/
     tokens.css
@@ -121,44 +89,33 @@ src/
     image.ts
     schema.ts
 public/
-  fonts/
   og/
   brand_assets/
   llms.txt
-docs/
-  CLAUDE.md
-  DESIGN-BRIEF.md
-  COPY.md
 astro.config.mjs
 _headers
-_redirects
+_redirects              # canonical redirects file for Cloudflare Pages static output
 wrangler.toml
 ```
 
 ---
 
-## astro.config.mjs (use exactly this)
+## astro.config.mjs (current — keep in sync)
 
 ```js
 import { defineConfig, fontProviders } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://arthuraizikovich.com',
 
-  adapter: cloudflare({
-    imageService: 'cloudflare-binding',
-  }),
+  output: 'static',
 
   integrations: [
     sitemap({
       i18n: {
         defaultLocale: 'da',
-        locales: {
-          da: 'da-DK',
-          en: 'en-GB',
-        },
+        locales: { da: 'da-DK', en: 'en-GB' },
       },
     }),
   ],
@@ -167,51 +124,29 @@ export default defineConfig({
     defaultLocale: 'da',
     locales: ['da', 'en'],
     routing: {
-      prefixDefaultLocale: false,
-      // redirectToDefaultLocale only valid when prefixDefaultLocale: true — omit it
+      prefixDefaultLocale: true,
     },
   },
 
   // fonts: top-level in Astro 6 (no longer under experimental)
   fonts: [
-    {
-      provider: fontProviders.google(),
-      name: 'Fraunces',
-      cssVariable: '--font-heading',
-      styles: ['normal', 'italic'],
-      weights: [300, 400, 500],
-    },
-    {
-      provider: fontProviders.google(),
-      name: 'DM Sans',
-      cssVariable: '--font-body',
-      styles: ['normal'],
-      weights: [400, 500],
-    },
-    {
-      provider: fontProviders.google(),
-      name: 'DM Mono',
-      cssVariable: '--font-mono',
-      styles: ['normal'],
-      weights: [400],
-    },
+    { provider: fontProviders.google(), name: 'Fraunces', cssVariable: '--font-heading', styles: ['normal', 'italic'], weights: [300, 400, 500] },
+    { provider: fontProviders.google(), name: 'DM Sans',  cssVariable: '--font-body',    styles: ['normal'], weights: [400, 500] },
+    { provider: fontProviders.google(), name: 'DM Mono',  cssVariable: '--font-mono',    styles: ['normal'], weights: [400] },
   ],
 
-  build: {
-    assets: '_astro',
-  },
+  build: { assets: '_astro' },
 
   vite: {
-    build: {
-      assetsInlineLimit: 0,
-    },
+    resolve: { alias: { '@': '/src' } },
+    build: { assetsInlineLimit: 0 },
   },
 });
 ```
 
 ---
 
-## Design system — tokens.css (use exactly this)
+## Design system — tokens.css (current)
 
 ```css
 :root {
@@ -219,9 +154,11 @@ export default defineConfig({
   --color-bg:      #F8F5F0;
   --color-text:    #1A1A1A;
   --color-accent:  #C8922A;  /* amber — CTAs, links, hover only. Never as bg fill */
-  --color-muted:   #8A8480;
+  --color-muted:   #696560;
   --color-surface: #F0ECE6;
   --color-border:  #E2DDD8;
+  --color-success: #3D6B4F;
+  --color-error:   #9B3535;
 
   /* Typography */
   --font-heading: var(--font-fraunces, 'Fraunces'), Georgia, serif;
@@ -229,15 +166,9 @@ export default defineConfig({
   --font-mono:    var(--font-dm-mono, 'DM Mono'), monospace;
 
   /* Spacing scale */
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-6:  1.5rem;
-  --space-8:  2rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-24: 6rem;
+  --space-1: 0.25rem; --space-2: 0.5rem;  --space-3: 0.75rem;
+  --space-4: 1rem;    --space-6: 1.5rem;  --space-8: 2rem;
+  --space-12: 3rem;   --space-16: 4rem;   --space-24: 6rem;
 
   /* Layout */
   --max-width:     1280px;
@@ -248,16 +179,25 @@ export default defineConfig({
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
 }
+
+[data-theme="dark"] {
+  --color-bg:      #111010;
+  --color-text:    #F0ECE6;
+  --color-accent:  #D4A043;
+  --color-muted:   #827C78;  /* lightened for 4.6:1 contrast on dark bg */
+  --color-surface: #1C1B1A;
+  --color-border:  #2C2A28;
+  --color-success: #6BBF8A;
+  --color-error:   #E07070;
+}
 ```
 
 ---
 
-## View transitions — transitions.css (use exactly this)
+## View transitions — transitions.css
 
 ```css
-@view-transition {
-  navigation: auto;
-}
+@view-transition { navigation: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
@@ -269,7 +209,7 @@ export default defineConfig({
 
 ---
 
-## _headers (use exactly this)
+## _headers
 
 ```
 /_astro/*
@@ -290,7 +230,21 @@ export default defineConfig({
 
 ---
 
-## LocalBusiness schema (use in LocalBusinessSchema.astro)
+## Gotchas
+
+- **Trailing slashes on pathname**: `Astro.url.pathname` returns `/da/priser/` — always strip before comparing to nav hrefs:
+  ```ts
+  const norm = (p: string) => p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p;
+  ```
+- **Dark mode overlays**: Never use `color-mix(in srgb, var(--color-text) N%, transparent)` for backdrops. In dark mode `--color-text` is light (`#F0ECE6`), making the overlay near-white. Use fixed `rgb(10 10 10 / 0.92)`.
+- **Tag CSS `::before`**: Blog/project tags use `CSS ::before { content: '#' }`. Do NOT add `#` in template literals — you'll get `##tag`.
+- **DA internal links**: All Danish page links must include the `/da/` prefix (e.g. `/da/portfolio/${slug}`). Astro's i18n does NOT auto-prefix relative links.
+- **Dark mode toggle**: Theme stored in `localStorage('theme')`, applied as `data-theme="dark"` on `<html>`. Anti-flash script is inline in `<head>` of `Base.astro`.
+- **Page top spacing**: `global.css` adds `padding-block-start: var(--space-16)` to `#main`. Individual page headers must NOT add their own top padding — set `padding-block-start: 0` in page styles.
+
+---
+
+## LocalBusiness schema (LocalBusinessSchema.astro)
 
 ```json
 {
@@ -299,16 +253,8 @@ export default defineConfig({
   "name": "Arthur Aizikovich / AA Media",
   "url": "https://arthuraizikovich.com",
   "image": "https://arthuraizikovich.com/og/og-home.png",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Copenhagen",
-    "addressCountry": "DK"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 55.6761,
-    "longitude": 12.5683
-  },
+  "address": { "@type": "PostalAddress", "addressLocality": "Copenhagen", "addressCountry": "DK" },
+  "geo": { "@type": "GeoCoordinates", "latitude": 55.6761, "longitude": 12.5683 },
   "priceRange": "DKK 5500–6000+",
   "description": "Conference, wedding and event photographer in Copenhagen",
   "sameAs": [
@@ -333,13 +279,13 @@ export default defineConfig({
 
 ## Anti-slop rules — NEVER violate
 
-- No Inter, Roboto, Arial, Space Grotesk as primary fonts
+- No Inter, Robota, Arial, Space Grotesk as primary fonts
 - No purple gradients
 - No generic card layouts with rounded corners and drop shadows
 - No cookie-cutter hero: centred text + button on a blurred photo
 - No multiple competing animations
-- No Cloudinary — use Cloudflare image binding
-- No Vercel — use Cloudflare Pages
+- No Cloudinary — standard Astro image pipeline
+- No Vercel — Cloudflare Pages only
 - No `<ClientRouter />` — CSS-native view transitions only
 - Photos are the visual focus — layout supports, never competes
 - Never hardcode content — always from content collections or props
@@ -362,10 +308,10 @@ Never commit these to git.
 
 | Variable | Purpose |
 |---|---|
-| `TURNSTILE_SECRET_KEY` | Contact form bot protection (get from Cloudflare Turnstile dashboard) |
+| `TURNSTILE_SECRET_KEY` | Contact form bot protection |
 | `CONTACT_EMAIL` | Destination address for form submissions |
 
-For local dev, add to a `.dev.vars` file (already in `.gitignore`):
+For local dev, add to `.dev.vars` (gitignored):
 ```
 TURNSTILE_SECRET_KEY=your_key_here
 CONTACT_EMAIL=arthur@arthuraizikovich.com
@@ -373,7 +319,7 @@ CONTACT_EMAIL=arthur@arthuraizikovich.com
 
 ---
 
-## Session rules (for feature work AFTER foundation)
+## Session rules
 
 1. Show plan for new features — wait for approval before coding
 2. One component or page per session — commit before moving on
@@ -385,41 +331,42 @@ CONTACT_EMAIL=arthur@arthuraizikovich.com
 
 ## CURRENT BUILD STATUS
 
-Update at end of every session:
-
-- [x] Project scaffold (Astro 6 + Cloudflare + GitHub)
-- [x] astro.config.mjs (i18n + imageService + fonts — fonts top-level, not experimental)
-- [x] Design tokens + global CSS
-- [x] transitions.css
-- [x] Base.astro (Fixed Font import from astro:assets)
-- [x] Nav + Footer (Step 8/9)
+- [x] Project scaffold (Astro 6 + Cloudflare Pages + GitHub)
+- [x] astro.config.mjs (static output, i18n, fonts top-level)
+- [x] Design tokens (light + dark mode) + global CSS
+- [x] transitions.css (CSS-native, no ClientRouter)
+- [x] Base.astro (dark mode anti-flash, SEO meta)
+- [x] Nav (hamburger mobile menu, dark mode toggle, active state)
+- [x] Footer (locale switcher, social links)
 - [x] SEO.astro + LocalBusinessSchema + FAQSchema
-- [x] Content collection config (Zod schemas, src/content.config.ts — Astro 6 location)
-- [x] Home page (da + en)
-- [x] Portfolio grid + Lightbox island (Gallery.astro + Lightbox.astro)
-- [x] Portfolio index pages (da + en — fixed 404 on nav links)
-- [x] About / Om page (da + en, bio + 4 services + CTA)
-- [x] Services / Priser page (da + en, 4 pricing cards + FAQ schema)
-- [x] Contact / Kontakt page (da + en, ContactForm.astro + contact details)
-- [x] Blog posts (3 DA venue SEO articles: Bella Center, CPH wedding locations, event pricing guide)
-- [x] OG image (public/og/og-home.png — 1200×630, brand color #F8F5F0)
+- [x] Content collection config (Zod schemas, src/content.config.ts)
+- [x] Home page — da + en (2-col hero with photo showcase grid)
+- [x] Portfolio grid + Lightbox (Gallery.astro + Lightbox.astro, locale-aware)
+- [x] Portfolio index pages — da + en
+- [x] About / Om — da + en
+- [x] Pricing / Priser — da + en (editorial rate-sheet layout)
+- [x] Contact / Kontakt — da + en (ContactForm.astro)
+- [x] Blog — DA index + 3 SEO articles (Bella Center, CPH wedding locations, event pricing guide)
+- [x] OG image (public/og/og-home.png — 1200×630)
 - [x] llms.txt
-- [x] Sitemap + robots.txt (@astrojs/sitemap added to config)
+- [x] Sitemap + robots.txt
 - [x] _headers + _redirects
 - [x] wrangler.toml
-- [ ] EN blog content (WARNING: currently empty — DA only)
-- [ ] Deploy to Cloudflare Pages staging — verify routing on real infra
+- [x] Deployed and live at new-arthur-photo-site.pages.dev
+- [x] A11y + theming audit pass (~18/20 impeccable score)
+- [ ] EN blog content (currently empty — DA only)
+- [ ] Real photography assets (placeholder tiles in hero showcase)
 - [ ] Performance audit (Lighthouse 100)
 - [ ] Danish local citations (Krak, Trustpilot.dk, 118)
 - [ ] Google Business Profile optimised
-- [ ] Launch
+- [ ] Launch on arthuraizikovich.com
 
 ---
 
-## Pre-launch checks (run in order before deploying to production)
+## Pre-launch checks (run in order)
 
-- [ ] `npm run build` exits clean — zero type errors, zero warnings
-- [ ] i18n routes resolve: `/` → Danish, `/en/` → English, `/portfolio` → 200, `/en/portfolio` → 200
+- [ ] `npm run build` exits clean — zero errors, zero warnings
+- [ ] i18n routes resolve: `/da/` → Danish, `/en/` → English, `/da/portfolio` → 200, `/en/portfolio` → 200
 - [ ] hreflang tags present and correct on every page (check page source)
 - [ ] JSON-LD validates at https://validator.schema.org
 - [ ] Sitemap includes both `da` and `en` URLs
@@ -428,5 +375,4 @@ Update at end of every session:
 - [ ] Contact form submits successfully and email arrives
 - [ ] Cloudflare Worker env vars set in dashboard (not just .dev.vars)
 - [ ] `_headers` cache rules active — verify via CF Pages response headers
-- [ ] No hardcoded strings in components (grep for any DA/EN text outside collections)
 - [ ] All portfolio slugs resolve — no broken dynamic routes
