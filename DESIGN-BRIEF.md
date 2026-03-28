@@ -142,8 +142,8 @@ No horizontal variant exists — always use the square/stacked version.
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "Photographer"],
   "name": "Arthur Aizikovich / AA Media",
-  "url": "https://arthuraizikovich.com",
-  "image": "https://arthuraizikovich.com/og-image.jpg",
+  "url": "https://new-arthur-photo-site.pages.dev",
+  "image": "https://new-arthur-photo-site.pages.dev/og-image.jpg",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Copenhagen",

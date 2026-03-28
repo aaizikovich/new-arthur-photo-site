@@ -1,7 +1,7 @@
 export const onRequestPost: PagesFunction = async ({ request }) => {
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://arthuraizikovich.com',
+    'Access-Control-Allow-Origin': 'https://new-arthur-photo-site.pages.dev',
   };
 
   let body: Record<string, string>;

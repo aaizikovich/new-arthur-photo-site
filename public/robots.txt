@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arthuraizikovich.com/sitemap-index.xml
+Sitemap: https://new-arthur-photo-site.pages.dev/sitemap-index.xml

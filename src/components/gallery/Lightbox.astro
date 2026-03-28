@@ -27,6 +27,7 @@ const t = locale === 'da'
   aria-modal="true"
   aria-label={t.dialog}
   aria-hidden="true"
+  inert
 >
   <button class="lightbox-close" id="lightbox-close" aria-label={t.close} type="button">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -117,6 +118,7 @@ const t = locale === 'da'
 
     const lb = document.getElementById('lightbox')!;
     lb.setAttribute('aria-hidden', 'false');
+    lb.removeAttribute('inert');
     lb.classList.add('is-open');
 
     document.body.style.overflow = 'hidden';
@@ -126,6 +128,7 @@ const t = locale === 'da'
   function closeLightbox() {
     const lb = document.getElementById('lightbox')!;
     lb.setAttribute('aria-hidden', 'true');
+    lb.setAttribute('inert', '');
     lb.classList.remove('is-open');
     document.body.style.overflow = '';
 

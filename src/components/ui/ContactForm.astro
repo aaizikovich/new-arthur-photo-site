@@ -41,24 +41,26 @@ const t = {
   novalidate
 >
   <div class="field">
-    <label for="name">{t.name}</label>
+    <label for="name">{t.name} <span class="required" aria-hidden="true">*</span></label>
     <input
       type="text"
       id="name"
       name="name"
       autocomplete="name"
       required
+      aria-required="true"
     />
   </div>
 
   <div class="field">
-    <label for="email">{t.email}</label>
+    <label for="email">{t.email} <span class="required" aria-hidden="true">*</span></label>
     <input
       type="email"
       id="email"
       name="email"
       autocomplete="email"
       required
+      aria-required="true"
     />
   </div>
 
@@ -82,12 +84,13 @@ const t = {
   </div>
 
   <div class="field field--full">
-    <label for="message">{t.message}</label>
+    <label for="message">{t.message} <span class="required" aria-hidden="true">*</span></label>
     <textarea
       id="message"
       name="message"
       rows="5"
       required
+      aria-required="true"
     ></textarea>
   </div>
 
@@ -167,6 +170,11 @@ const t = {
     color: var(--color-muted);
   }
 
+  .required {
+    color: var(--color-accent);
+    margin-inline-start: 0.25em;
+  }
+
   input,
   select,
   textarea {
@@ -182,10 +190,11 @@ const t = {
     transition: border-color var(--transition-fast);
   }
 
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: none;
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
     border-color: var(--color-accent);
   }
 
@@ -197,7 +206,7 @@ const t = {
   }
 
   [data-theme="dark"] select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6560' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23827C78' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   }
 
   textarea {

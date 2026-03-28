@@ -2,7 +2,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://arthuraizikovich.com',
+  site: 'https://new-arthur-photo-site.pages.dev',
 
   output: 'static',
 

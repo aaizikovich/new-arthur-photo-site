@@ -1,4 +1,4 @@
-const SITE_URL = 'https://arthuraizikovich.com';
+const SITE_URL = 'https://new-arthur-photo-site.pages.dev';
 
 /**
  * Creates a BreadcrumbList JSON-LD object.

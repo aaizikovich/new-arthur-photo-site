@@ -4,7 +4,7 @@
 ## Project
 Portfolio + booking site for Arthur Aizikovich (AA Media), Copenhagen photographer.
 Primary services: weddings, conferences, events, portraits, nightlife.
-Domain: arthuraizikovich.com
+Domain: new-arthur-photo-site.pages.dev
 
 **Status: Foundation is fully built and live at `new-arthur-photo-site.pages.dev`.
 All sessions are feature/fix work — do NOT re-scaffold anything.**
@@ -31,7 +31,44 @@ All sessions are feature/fix work — do NOT re-scaffold anything.**
 npm run dev      # local dev server (localhost:4321)
 npm run build    # production build
 npm run preview  # preview production build
+npx astro check  # TypeScript + Astro type checking (run before every commit)
 ```
+
+---
+
+## Content authoring
+
+**Blog post** — `src/content/blog/[slug].md` (required: `title`, `description`, `date`):
+```yaml
+---
+title: ""
+description: ""
+date: 2026-01-01
+locale: da        # da | en
+draft: false
+coverImage: ""    # optional
+tags: []          # optional
+---
+```
+
+**Portfolio project** — `src/content/projects/[slug].md` (required: `title` only):
+```yaml
+---
+title: ""
+description: ""   # optional
+locale: da        # da | en
+featured: false
+draft: false
+coverImage: ""    # optional
+date: 2026-01-01  # optional
+tags: []          # optional
+images:           # optional
+  - src: "/path/to/image.webp"
+    alt: "Alt text"
+---
+```
+
+Run `npm run build` after adding content to catch missing required fields or broken paths.
 
 ---
 
@@ -107,7 +144,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://arthuraizikovich.com',
+  site: 'https://new-arthur-photo-site.pages.dev',
 
   output: 'static',
 
@@ -236,7 +273,8 @@ export default defineConfig({
   ```ts
   const norm = (p: string) => p.endsWith('/') && p.length > 1 ? p.slice(0, -1) : p;
   ```
-- **Dark mode overlays**: Never use `color-mix(in srgb, var(--color-text) N%, transparent)` for backdrops. In dark mode `--color-text` is light (`#F0ECE6`), making the overlay near-white. Use fixed `rgb(10 10 10 / 0.92)`.
+- **Dark mode overlays**: Never use `color-mix(in srgb, var(--color-text) N%, transparent)` for backdrops. In dark mode `--color-text` is light (`#F0ECE6`), making the overlay near-white. Use fixed `rgb(10 10 10 / 0.92)`. This applies to Lightbox.astro and any modal/overlay component.
+- **Mobile touch targets**: Footer links, nav items, and icon buttons must have a minimum 48×48px clickable area — use padding to hit the size, not just visual dimensions (WCAG 2.5.5).
 - **Tag CSS `::before`**: Blog/project tags use `CSS ::before { content: '#' }`. Do NOT add `#` in template literals — you'll get `##tag`.
 - **DA internal links**: All Danish page links must include the `/da/` prefix (e.g. `/da/portfolio/${slug}`). Astro's i18n does NOT auto-prefix relative links.
 - **Dark mode toggle**: Theme stored in `localStorage('theme')`, applied as `data-theme="dark"` on `<html>`. Anti-flash script is inline in `<head>` of `Base.astro`.
@@ -251,8 +289,8 @@ export default defineConfig({
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "Photographer"],
   "name": "Arthur Aizikovich / AA Media",
-  "url": "https://arthuraizikovich.com",
-  "image": "https://arthuraizikovich.com/og/og-home.png",
+  "url": "https://new-arthur-photo-site.pages.dev",
+  "image": "https://new-arthur-photo-site.pages.dev/og/og-home.png",
   "address": { "@type": "PostalAddress", "addressLocality": "Copenhagen", "addressCountry": "DK" },
   "geo": { "@type": "GeoCoordinates", "latitude": 55.6761, "longitude": 12.5683 },
   "priceRange": "DKK 5500–6000+",
@@ -314,7 +352,7 @@ Never commit these to git.
 For local dev, add to `.dev.vars` (gitignored):
 ```
 TURNSTILE_SECRET_KEY=your_key_here
-CONTACT_EMAIL=arthur@arthuraizikovich.com
+CONTACT_EMAIL=arthur@new-arthur-photo-site.pages.dev
 ```
 
 ---
@@ -326,6 +364,7 @@ CONTACT_EMAIL=arthur@arthuraizikovich.com
 3. End every session: update CURRENT BUILD STATUS + commit + push
 4. Mobile-first always
 5. Check latest stable version of any library before using it
+6. Run `impeccable:audit` after any significant feature addition — fix all P0/P1 issues before committing
 
 ---
 
@@ -359,7 +398,7 @@ CONTACT_EMAIL=arthur@arthuraizikovich.com
 - [ ] Performance audit (Lighthouse 100)
 - [ ] Danish local citations (Krak, Trustpilot.dk, 118)
 - [ ] Google Business Profile optimised
-- [ ] Launch on arthuraizikovich.com
+- [ ] Launch on new-arthur-photo-site.pages.dev
 
 ---
 

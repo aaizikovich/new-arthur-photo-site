@@ -2,7 +2,7 @@ name = "aa-media-contact"
 compatibility_date = "2024-04-03"
 
 [vars]
-SITE_URL = "https://arthuraizikovich.com"
+SITE_URL = "https://new-arthur-photo-site.pages.dev"
 
 # Cloudflare Pages project
 # Deploy via: npx wrangler pages deploy ./dist --project-name=arthuraizikovich

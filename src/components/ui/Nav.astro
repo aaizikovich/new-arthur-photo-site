@@ -80,7 +80,7 @@ const altLang = isDa
       <a href={altLang.href} class="lang-switch" hreflang={isDa ? 'en' : 'da'}>
         {altLang.label}
       </a>
-      <button id="theme-toggle" class="theme-toggle" aria-label={isDa ? 'Skift farvetema' : 'Toggle colour theme'} title={isDa ? 'Skift farvetema' : 'Toggle colour theme'} type="button">
+      <button id="theme-toggle" class="theme-toggle" aria-label={isDa ? 'Skift farvetema' : 'Toggle colour theme'} aria-pressed="false" title={isDa ? 'Skift farvetema' : 'Toggle colour theme'} type="button">
         <span class="theme-toggle-icon"></span>
       </button>
       <a href={isDa ? '/da/kontakt' : '/en/contact'} class="nav-cta">
@@ -101,7 +101,7 @@ const altLang = isDa
     </div>
   </nav>
 
-  <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <div id="mobile-menu" class="mobile-menu" aria-hidden="true" inert>
     <ul role="list">
       {navLinks.map(({ href, label }) => (
         <li>
@@ -402,7 +402,13 @@ const altLang = isDa
     const isDark = html.getAttribute('data-theme') === 'dark';
     html.setAttribute('data-theme', isDark ? 'light' : 'dark');
     localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    themeBtn.setAttribute('aria-pressed', isDark ? 'false' : 'true');
   });
+
+  // Sync aria-pressed on load
+  if (html.getAttribute('data-theme') === 'dark') {
+    themeBtn?.setAttribute('aria-pressed', 'true');
+  }
 
   // Mobile menu
   const menuToggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
@@ -412,6 +418,7 @@ const altLang = isDa
     menuToggle?.setAttribute('aria-expanded', 'true');
     menuToggle?.setAttribute('aria-label', menuToggle.closest('[lang]')?.getAttribute('lang') === 'da' ? 'Luk menu' : 'Close menu');
     mobileMenu?.setAttribute('aria-hidden', 'false');
+    mobileMenu?.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
   }
 
@@ -419,6 +426,7 @@ const altLang = isDa
     menuToggle?.setAttribute('aria-expanded', 'false');
     menuToggle?.setAttribute('aria-label', menuToggle.closest('[lang]')?.getAttribute('lang') === 'da' ? 'Åbn menu' : 'Open menu');
     mobileMenu?.setAttribute('aria-hidden', 'true');
+    mobileMenu?.setAttribute('inert', '');
     document.body.style.overflow = '';
   }
 
